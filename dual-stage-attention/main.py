@@ -31,8 +31,6 @@ def main():
     backbone = Backbone().to(device)
     backbone.eval()
 
-    # resnet(randn(1, 3, 224, 224)).shape # Shape input for Resnet-50: [N, C, H, W]
-
     # Define input transform:
     side_size = 256
     mean = [0.45, 0.45, 0.45]
@@ -113,7 +111,7 @@ def main():
     inputs = [i.to(device)[None, ...] for i in inputs]
 
     output = backbone(inputs)
-    print(output.shape)
+    print('output.shape:', output.shape)
 
 
 if __name__ == "__main__":

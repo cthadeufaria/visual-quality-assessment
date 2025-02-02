@@ -1,6 +1,6 @@
 from torchvision.models import resnet50, ResNet50_Weights
-from torch import nn, hub, std, cat, randn
-from torch.nn import AdaptiveAvgPool2d
+from torch import nn, hub, std, cat
+from torch.nn import AdaptiveAvgPool2d, AdaptiveAvgPool3d
 
 
 activation = {}
@@ -54,7 +54,7 @@ class ResNet50(nn.Module):
         self.avgpool = AdaptiveAvgPool2d((1, 1))
 
     def forward(self, x):
-        _ = self.model(x[0][:, :, 0, :, :]) # TODO: check correct sample input.
+        _ = self.model(x[0][:, :, 0, :, :]) # TODO: check correct sampled input.
 
         Fi = [
             activation[
@@ -65,7 +65,7 @@ class ResNet50(nn.Module):
         alpha = cat([self.avgpool(fi).flatten() for fi in Fi])
         beta = cat([std(fi, dim=(2, 3)).flatten() for fi in Fi])
 
-        semantic_features = cat([alpha, beta], dim=1)
+        semantic_features = cat([alpha, beta])
 
         return semantic_features
 
@@ -89,10 +89,10 @@ class SlowFast(nn.Module):
             str(i)
         )) for i, layer in enumerate(self.layers)]
 
-        self.avgpool = AdaptiveAvgPool2d((1, 1))
+        self.avgpool = AdaptiveAvgPool3d((1, 1, 1))
 
     def forward(self, x):
-        _ = self.model(x)
+        _ = self.model(x) # TODO: fix input error.
 
         Fi = [activation[str(i)] for i, _ in enumerate(self.layers)]
         
@@ -113,4 +113,4 @@ class Backbone(nn.Module):
         semantic_features = self.resnet(x)
         motion_features = self.slowfast(x)
 
-        return cat([semantic_features, motion_features], dim=1)
+        return cat([semantic_features, motion_features])
