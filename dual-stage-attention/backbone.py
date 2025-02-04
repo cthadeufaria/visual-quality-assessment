@@ -54,7 +54,7 @@ class ResNet50(nn.Module):
         self.avgpool = AdaptiveAvgPool2d((1, 1))
 
     def forward(self, x):
-        _ = self.model(x[0][:, :, 0, :, :]) # TODO: check correct sampled input.
+        _ = self.model(x[0][:, :, 0, :, :])
 
         Fi = [
             activation[
@@ -92,7 +92,7 @@ class SlowFast(nn.Module):
         self.avgpool = AdaptiveAvgPool3d((1, 1, 1))
 
     def forward(self, x):
-        _ = self.model(x) # TODO: fix input error.
+        _ = self.model(x)
 
         Fi = [activation[str(i)] for i, _ in enumerate(self.layers)]
         
