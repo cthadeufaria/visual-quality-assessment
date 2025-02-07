@@ -1,4 +1,4 @@
-import os, pickle, torch, urllib, sys, types, glob
+import os, pickle, torch, sys, types, glob
 from torch.utils.data import Dataset
 import torch.nn as nn
 from torchvision.transforms import (
@@ -6,10 +6,7 @@ from torchvision.transforms import (
     Lambda,
     Resize,
 )
-from torchvision.transforms._transforms_video import (
-    CenterCropVideo,
-    NormalizeVideo,
-)
+from torchvision.transforms._transforms_video import NormalizeVideo
 # Fixed module import error using the impl. @ https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/13985#issuecomment-2439896362
 from pytorchvideo.data.encoded_video import EncodedVideo
 from torchvision.transforms.functional import rgb_to_grayscale
@@ -19,7 +16,6 @@ sys.modules["torchvision.transforms.functional_tensor"] = functional_tensor
 from pytorchvideo.transforms import (
     ApplyTransformToKey,
     UniformTemporalSubsample,
-    ShortSideScale,
 )
 
 
