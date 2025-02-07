@@ -54,7 +54,7 @@ class ResNet50(nn.Module):
         self.avgpool = AdaptiveAvgPool2d((1, 1))
 
     def forward(self, x):
-        _ = self.model(x[0][:, :, 0, :, :])
+        _ = self.model(x)
 
         Fi = [
             activation[
@@ -110,7 +110,10 @@ class Backbone(nn.Module):
         self.slowfast = SlowFast()
 
     def forward(self, x):
-        semantic_features = self.resnet(x)
-        motion_features = self.slowfast(x)
+        resnet50_input = x[1][:, :, 0, :, :]
+        slowfast_input = x[0]
+
+        semantic_features = self.resnet(resnet50_input)
+        motion_features = self.slowfast(slowfast_input)
 
         return cat([semantic_features, motion_features])

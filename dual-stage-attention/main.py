@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
-from dataset import ExampleDataset
+from dataset import VideoDataset
 from backbone import Backbone
 
 
@@ -10,7 +10,11 @@ def main():
     backbone = Backbone().to(device)
     backbone.eval()
 
-    inputs = [i.to(device) for i in next(iter(DataLoader(ExampleDataset())))]
+    inputs = [
+        [a[0].to(device), a[1].to(device)] if type(a) == list else a.to(device)
+        for a in next(iter(DataLoader(VideoDataset('./datasets/LIVE_NFLX_Plus'))))
+    ]
+
     output = backbone(inputs)
 
     print('output.shape:', output.shape)
