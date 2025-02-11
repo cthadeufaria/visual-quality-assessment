@@ -70,6 +70,9 @@ class ResNet50(nn.Module):
         return semantic_features
 
 
+# TODO: Understand and implement the following quote:
+# In the SlowFast pipeline, the temporal stride in the slow pathway is τ = 6,
+# and the speed and channel ratios in the fast pathway are α = 6 and β = 8, respectively.
 class SlowFast(nn.Module):
     """
     SlowFast backbone network for the dual-stage attention model.
